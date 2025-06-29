@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracker de Hábitos Avanzado</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <h1>🎯 Tracker de Hábitos</h1>
+                <div class="progress-summary" id="progressSummary">
+                    <span class="progress-item">📊 <span id="todayProgress">0/0</span> hoy</span>
+                    <span class="progress-item">🔥 <span id="bestStreak">0</span> mejor racha</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="addHabitBtn" class="btn btn-primary">+ Agregar Hábito</button>
+                <div class="export-buttons">
+                    <button id="exportDataBtn" class="btn btn-secondary">📥 Exportar</button>
+                    <button id="exportStatsBtn" class="btn btn-secondary">📊 Estadísticas</button>
+                    <input type="file" id="importDataBtn" accept=".json" style="display: none;">
+                    <button onclick="document.getElementById('importDataBtn').click()" class="btn btn-secondary">📤 Importar</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="filters-section">
+            <div class="search-filter">
+                <input type="text" id="searchHabits" placeholder="🔍 Buscar hábitos..." class="search-input">
+            </div>
+            <div class="category-filters">
+                <button class="filter-btn active" data-category="all">Todos</button>
+                <div id="categoryFilters"></div>
+            </div>
+        </div>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="today">📅 Hoy</button>
+            <button class="tab-btn" data-tab="all">📋 Todos</button>
+            <button class="tab-btn" data-tab="calendar">🗓️ Calendario</button>
+            <button class="tab-btn" data-tab="stats">📈 Estadísticas</button>
+        </nav>
+
+        <main>
+            <!-- Sección Hoy -->
+            <section id="today" class="tab-content active">
+                <div class="date-header">
+                    <h2 id="currentDate"></h2>
+                    <div class="daily-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="dailyProgressFill"></div>
+                        </div>
+                        <span id="dailyProgressText">0% completado</span>
+                    </div>
+                </div>
+                <div id="todayHabits" class="habits-container">
+                    <div class="empty-state">
+                        <p>No hay hábitos programados para hoy</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Todos los Hábitos -->
+            <section id="all" class="tab-content">
+                <div class="section-header">
+                    <h2>Todos los Hábitos</h2>
+                    <div class="view-options">
+                        <button class="view-btn active" data-view="grid">⊞</button>
+                        <button class="view-btn" data-view="list">☰</button>
+                    </div>
+                </div>
+                <div id="allHabits" class="habits-container">
+                    <div class="empty-state">
+                        <p>No tienes hábitos creados aún</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Vista Calendario -->
+            <section id="calendar" class="tab-content">
+                <div class="calendar-controls">
+                    <div class="calendar-header">
+                        <button id="prevMonth" class="btn btn-secondary">‹</button>
+                        <h2 id="calendarMonth"></h2>
+                        <button id="nextMonth" class="btn btn-secondary">›</button>
+                    </div>
+                    <div class="habit-selector">
+                        <select id="calendarHabitSelect">
+                            <option value="">Selecciona un hábito</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="calendarGrid" class="calendar-grid"></div>
+                <div class="calendar-legend">
+                    <div class="legend-item">
+                        <div class="legend-color completed"></div>
+                        <span>Completado</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color scheduled"></div>
+                        <span>Programado</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color today"></div>
+                        <span>Hoy</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Estadísticas -->
+            <section id="stats" class="tab-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>📊 Resumen General</h3>
+                        <div class="stat-item">
+                            <span>Total de hábitos:</span>
+                            <strong id="totalHabits">0</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span>Completados hoy:</span>
+                            <strong id="completedToday">0</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span>Racha más larga:</span>
+                            <strong id="longestStreak">0 días</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>📈 Esta Semana</h3>
+                        <div id="weeklyChart" class="chart-container"></div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>🏆 Mejores Hábitos</h3>
+                        <div id="topHabits" class="top-habits-list"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal para agregar/editar hábito -->
+    <div id="habitModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Agregar Hábito</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <form id="habitForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="habitName">Nombre del hábito:</label>
+                        <input type="text" id="habitName" required placeholder="Ej: Hacer ejercicio">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="habitCategory">Categoría:</label>
+                        <input type="text" id="habitCategory" placeholder="Ej: Salud, Productividad" list="categoryList">
+                        <datalist id="categoryList"></datalist>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="habitColor">Color:</label>
+                        <div class="color-picker">
+                            <input type="color" id="habitColor" value="#8B9DC3">
+                            <div class="preset-colors">
+                                <div class="color-option" data-color="#8B9DC3" style="background: #8B9DC3"></div>
+                                <div class="color-option" data-color="#A8C8A8" style="background: #A8C8A8"></div>
+                                <div class="color-option" data-color="#D4A574" style="background: #D4A574"></div>
+                                <div class="color-option" data-color="#C8A2C8" style="background: #C8A2C8"></div>
+                                <div class="color-option" data-color="#F4A6A6" style="background: #F4A6A6"></div>
+                                <div class="color-option" data-color="#A6D4EA" style="background: #A6D4EA"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="habitType">Tipo de hábito:</label>
+                        <select id="habitType">
+                            <option value="daily">Diario</option>
+                            <option value="weekly">Semanal</option>
+                            <option value="custom">Días específicos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" id="daysGroup">
+                    <label>Días de la semana:</label>
+                    <div class="days-selector">
+                        <label><input type="checkbox" value="0"> Dom</label>
+                        <label><input type="checkbox" value="1"> Lun</label>
+                        <label><input type="checkbox" value="2"> Mar</label>
+                        <label><input type="checkbox" value="3"> Mié</label>
+                        <label><input type="checkbox" value="4"> Jue</label>
+                        <label><input type="checkbox" value="5"> Vie</label>
+                        <label><input type="checkbox" value="6"> Sáb</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="habitTime">Hora recordatorio (opcional):</label>
+                        <input type="time" id="habitTime">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="habitGoal">Meta semanal:</label>
+                        <input type="number" id="habitGoal" min="1" max="7" placeholder="Ej: 5">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="habitNotes">Notas (opcional):</label>
+                    <textarea id="habitNotes" rows="3" placeholder="Añade notas, motivación o detalles..."></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
