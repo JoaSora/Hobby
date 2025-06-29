@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Biblioteca de Juegos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Overlay para móvil -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1 class="logo">
+                    <span class="logo-icon">🎮</span>
+                    GameTracker
+                </h1>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h3 class="nav-title">Biblioteca</h3>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-view="all">
+                                <span class="nav-icon">📚</span>
+                                Todos los juegos
+                                <span class="nav-count" id="allGamesCount">0</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-view="playing">
+                                <span class="nav-icon">🎯</span>
+                                Jugando
+                                <span class="nav-count" id="playingCount">0</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-view="completed">
+                                <span class="nav-icon">✅</span>
+                                Completados
+                                <span class="nav-count" id="completedCount">0</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-view="paused">
+                                <span class="nav-icon">⏸️</span>
+                                Pausados
+                                <span class="nav-count" id="pausedCount">0</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-view="abandoned">
+                                <span class="nav-icon">🚫</span>
+                                Abandonados
+                                <span class="nav-count" id="abandonedCount">0</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-view="wishlist">
+                                <span class="nav-icon">⭐</span>
+                                Lista de deseos
+                                <span class="nav-count" id="wishlistCount">0</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-header">
+                        <h3 class="nav-title">Mis Listas</h3>
+                        <button class="btn-add-list" onclick="openCreateListModal()">+</button>
+                    </div>
+                    <ul class="nav-list" id="customLists">
+                        <!-- Las listas personalizadas se generarán aquí -->
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h3 class="nav-title">Configuración</h3>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <button class="nav-link config-btn" onclick="exportData()" title="Descargar backup de datos">
+                                <span class="nav-icon">📥</span>
+                                Exportar datos
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link config-btn" onclick="triggerImport()" title="Cargar backup de datos">
+                                <span class="nav-icon">📤</span>
+                                Importar datos
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Mover el input file aquí -->
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+            </nav>
+        </aside>
+
+        <!-- Sidebar Toggle Button -->
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <span class="hamburger"></span>
+            <span class="hamburger"></span>
+            <span class="hamburger"></span>
+        </button>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <header class="content-header">
+                <div class="header-left">
+                    <h2 class="page-title" id="pageTitle">Todos los juegos</h2>
+                    <p class="page-subtitle" id="pageSubtitle">Gestiona tu biblioteca de videojuegos</p>
+                </div>
+                <div class="header-actions">
+                    <div class="search-container">
+                        <input type="text" id="searchInput" placeholder="Buscar juegos..." class="search-input">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                    <select id="genreFilter" class="filter-select">
+                        <option value="all">Todos los géneros</option>
+                    </select>
+                    <select id="platformFilter" class="filter-select">
+                        <option value="all">Todas las plataformas</option>
+                    </select>
+                    
+                    
+                    <button class="btn btn-primary" onclick="openAddGameModal()">
+                        <span class="btn-icon">+</span>
+                        <span class="btn-text">Añadir juego</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Cards - Solo para "Todos los juegos" -->
+            <div class="stats-container" id="statsContainer">
+                <div class="stat-card stat-warning">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="statsPlatinums">0</div>
+                        <div class="stat-label">Platinos</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-info">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="statsTotalHours">0</div>
+                        <div class="stat-label">Horas jugadas</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-success">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="statsTotalAchievements">0</div>
+                        <div class="stat-label">Logros totales</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Games Grid -->
+            <div class="games-section">
+                <div class="games-grid" id="gamesGrid">
+                    <!-- Los juegos se generarán aquí -->
+                </div>
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">🎮</div>
+                    <h3>No hay juegos aquí</h3>
+                    <p>Añade tu primer juego para comenzar</p>
+                    <button class="btn btn-primary" onclick="openAddGameModal()">
+                        <span class="btn-icon">+</span>
+                        Añadir juego
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para añadir/editar juego -->
+    <div class="modal-overlay" id="gameModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Añadir nuevo juego</h2>
+                <button class="modal-close" onclick="closeGameModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="gameForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="gameTitle">Título del juego *</label>
+                            <input type="text" id="gameTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gameSaga">Saga/Serie</label>
+                            <input type="text" id="gameSaga" placeholder="Ej: Resident Evil">
+                        </div>
+                        <div class="form-group">
+                            <label for="gameGenre">Género</label>
+                            <select id="gameGenre">
+                                <option value="">Selecciona un género</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gamePlatform">Plataforma</label>
+                            <select id="gamePlatform">
+                                <option value="">Selecciona una plataforma</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gameStatus">Estado</label>
+                            <select id="gameStatus">
+                                <option value="wishlist">Lista de deseos</option>
+                                <option value="playing">Jugando</option>
+                                <option value="completed">Completado</option>
+                                <option value="paused">Pausado</option>
+                                <option value="abandoned">Abandonado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gameHours">Horas jugadas</label>
+                            <input type="number" id="gameHours" min="0" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="formTotalAchievements">Total de logros</label>
+                            <input type="number" id="formTotalAchievements" min="0" max="10000" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="formCompletedAchievements">Logros completados</label>
+                            <input type="number" id="formCompletedAchievements" min="0" max="10000" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="gameRating">Calificación (1-10)</label>
+                            <input type="number" id="gameRating" min="0" max="10" placeholder="0">
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="platinumObtained">
+                                <span class="checkmark"></span>
+                                Platino obtenido
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="gameList">Lista personalizada</label>
+                            <select id="gameList">
+                                <option value="">Sin lista</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="gameNotes">Notas</label>
+                            <textarea id="gameNotes" rows="3" placeholder="Comentarios, impresiones..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeGameModal()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <span id="submitBtnText">Añadir juego</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para crear lista -->
+    <div class="modal-overlay" id="listModal">
+        <div class="modal modal-small">
+            <div class="modal-header">
+                <h2>Crear nueva lista</h2>
+                <button class="modal-close" onclick="closeCreateListModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="listForm">
+                    <div class="form-group">
+                        <label for="listName">Nombre de la lista</label>
+                        <input type="text" id="listName" placeholder="Ej: Resident Evil, Juegos de terror..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="listDescription">Descripción (opcional)</label>
+                        <textarea id="listDescription" rows="2" placeholder="Describe tu lista..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeCreateListModal()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Crear lista</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
