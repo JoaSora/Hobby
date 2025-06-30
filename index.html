@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Biblioteca de Juegos</title>
+    <title>Mi Biblioteca Personal</title>
     <link href="icon.png" rel="icon" type="image/png"/>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -17,70 +17,16 @@
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h1 class="logo">
-                    <span class="logo-icon">🎮</span>
-                    GameTracker
+                    <span class="logo-icon">🎯</span>
+                    HobbyTracker
                 </h1>
             </div>
 
-            <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <h3 class="nav-title">Biblioteca</h3>
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <button class="nav-link active" data-view="all">
-                                <span class="nav-icon">📚</span>
-                                Todos los juegos
-                                <span class="nav-count" id="allGamesCount">0</span>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-view="playing">
-                                <span class="nav-icon">🎯</span>
-                                Jugando
-                                <span class="nav-count" id="playingCount">0</span>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-view="completed">
-                                <span class="nav-icon">✅</span>
-                                Completados
-                                <span class="nav-count" id="completedCount">0</span>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-view="paused">
-                                <span class="nav-icon">⏸️</span>
-                                Pausados
-                                <span class="nav-count" id="pausedCount">0</span>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-view="abandoned">
-                                <span class="nav-icon">🚫</span>
-                                Abandonados
-                                <span class="nav-count" id="abandonedCount">0</span>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-view="wishlist">
-                                <span class="nav-icon">⭐</span>
-                                Lista de deseos
-                                <span class="nav-count" id="wishlistCount">0</span>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+            <nav class="sidebar-nav" id="sidebarNav">
+                <!-- Las secciones se generarán dinámicamente aquí -->
+            </nav>
 
-                <div class="nav-section">
-                    <div class="nav-header">
-                        <h3 class="nav-title">Mis Listas</h3>
-                        <button class="btn-add-list" onclick="openCreateListModal()">+</button>
-                    </div>
-                    <ul class="nav-list" id="customLists">
-                        <!-- Las listas personalizadas se generarán aquí -->
-                    </ul>
-                </div>
-
+            <div class="sidebar-footer">
                 <div class="nav-section">
                     <h3 class="nav-title">Configuración</h3>
                     <ul class="nav-list">
@@ -98,10 +44,8 @@
                         </li>
                     </ul>
                 </div>
-
-                <!-- Mover el input file aquí -->
                 <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
-            </nav>
+            </div>
         </aside>
 
         <!-- Sidebar Toggle Button -->
@@ -116,29 +60,28 @@
             <header class="content-header">
                 <div class="header-left">
                     <h2 class="page-title" id="pageTitle">Todos los juegos</h2>
-                    <p class="page-subtitle" id="pageSubtitle">Gestiona tu biblioteca de videojuegos</p>
+                    <p class="page-subtitle" id="pageSubtitle">Gestiona tu biblioteca personal</p>
                 </div>
                 <div class="header-actions">
                     <div class="search-container">
-                        <input type="text" id="searchInput" placeholder="Buscar juegos..." class="search-input">
+                        <input type="text" id="searchInput" placeholder="Buscar..." class="search-input">
                         <span class="search-icon">🔍</span>
                     </div>
                     <select id="genreFilter" class="filter-select">
                         <option value="all">Todos los géneros</option>
                     </select>
-                    <select id="platformFilter" class="filter-select">
-                        <option value="all">Todas las plataformas</option>
+                    <select id="statusFilter" class="filter-select">
+                        <option value="all">Todos los estados</option>
                     </select>
                     
-                    
-                    <button class="btn btn-primary" onclick="openAddGameModal()">
+                    <button class="btn btn-primary" id="addItemBtn" onclick="openAddModal()">
                         <span class="btn-icon">+</span>
-                        <span class="btn-text">Añadir juego</span>
+                        <span class="btn-text">Añadir</span>
                     </button>
                 </div>
             </header>
 
-            <!-- Stats Cards - Solo para "Todos los juegos" -->
+            <!-- Stats Cards - Solo para juegos -->
             <div class="stats-container" id="statsContainer">
                 <div class="stat-card stat-warning">
                     <div class="stat-icon">🏆</div>
@@ -163,18 +106,18 @@
                 </div>
             </div>
 
-            <!-- Games Grid -->
-            <div class="games-section">
-                <div class="games-grid" id="gamesGrid">
-                    <!-- Los juegos se generarán aquí -->
+            <!-- Content Grid -->
+            <div class="content-section">
+                <div class="content-grid" id="contentGrid">
+                    <!-- Los elementos se generarán aquí -->
                 </div>
                 <div class="empty-state" id="emptyState" style="display: none;">
-                    <div class="empty-icon">🎮</div>
-                    <h3>No hay juegos aquí</h3>
-                    <p>Añade tu primer juego para comenzar</p>
-                    <button class="btn btn-primary" onclick="openAddGameModal()">
+                    <div class="empty-icon">📚</div>
+                    <h3>No hay elementos aquí</h3>
+                    <p>Añade tu primer elemento para comenzar</p>
+                    <button class="btn btn-primary" onclick="openAddModal()">
                         <span class="btn-icon">+</span>
-                        Añadir juego
+                        Añadir elemento
                     </button>
                 </div>
             </div>
@@ -185,7 +128,7 @@
     <div class="modal-overlay" id="gameModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 id="modalTitle">Añadir nuevo juego</h2>
+                <h2 id="gameModalTitle">Añadir nuevo juego</h2>
                 <button class="modal-close" onclick="closeGameModal()">×</button>
             </div>
             <div class="modal-body">
@@ -223,19 +166,19 @@
                         </div>
                         <div class="form-group">
                             <label for="gameHours">Horas jugadas</label>
-                            <input type="number" id="gameHours" min="0" placeholder="0">
+                            <input type="number" id="gameHours" min="0" step="0.1" placeholder="0">
                         </div>
                         <div class="form-group">
-                            <label for="formTotalAchievements">Total de logros</label>
-                            <input type="number" id="formTotalAchievements" min="0" max="10000" placeholder="0">
+                            <label for="gameTotalAchievements">Total de logros</label>
+                            <input type="number" id="gameTotalAchievements" min="0" max="10000" placeholder="0">
                         </div>
                         <div class="form-group">
-                            <label for="formCompletedAchievements">Logros completados</label>
-                            <input type="number" id="formCompletedAchievements" min="0" max="10000" placeholder="0">
+                            <label for="gameCompletedAchievements">Logros completados</label>
+                            <input type="number" id="gameCompletedAchievements" min="0" max="10000" placeholder="0">
                         </div>
                         <div class="form-group">
-                            <label for="gameRating">Calificación (1-10)</label>
-                            <input type="number" id="gameRating" min="0" max="10" placeholder="0">
+                            <label for="gameRating">Calificación (1.0-10.0)</label>
+                            <input type="number" id="gameRating" min="1" max="10" step="0.1" placeholder="0">
                         </div>
                         <div class="form-group checkbox-group">
                             <label class="checkbox-label">
@@ -258,7 +201,71 @@
                     <div class="form-actions">
                         <button type="button" class="btn btn-secondary" onclick="closeGameModal()">Cancelar</button>
                         <button type="submit" class="btn btn-primary">
-                            <span id="submitBtnText">Añadir juego</span>
+                            <span id="gameSubmitBtnText">Añadir juego</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para añadir/editar contenido multimedia -->
+    <div class="modal-overlay" id="mediaModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="mediaModalTitle">Añadir elemento</h2>
+                <button class="modal-close" onclick="closeMediaModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="mediaForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="mediaTitle">Título *</label>
+                            <input type="text" id="mediaTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="mediaGenre">Género</label>
+                            <select id="mediaGenre">
+                                <option value="">Selecciona un género</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="mediaStatus">Estado</label>
+                            <select id="mediaStatus">
+                                <option value="pendiente">Pendiente</option>
+                                <option value="viendo">Viendo/Leyendo</option>
+                                <option value="terminado">Terminado</option>
+                                <option value="pausado">Pausado</option>
+                                <option value="abandonado">Abandonado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="mediaRating">Calificación (1.0-10.0)</label>
+                            <input type="number" id="mediaRating" min="1" max="10" step="0.1" placeholder="0">
+                        </div>
+                        <!-- Campos específicos para series/animes -->
+                        <div class="form-group" id="seasonGroup" style="display: none;">
+                            <label for="mediaSeason">Temporada actual</label>
+                            <input type="number" id="mediaSeason" min="1" placeholder="1">
+                        </div>
+                        <div class="form-group" id="episodeGroup" style="display: none;">
+                            <label for="mediaEpisode">Capítulo/Episodio actual</label>
+                            <input type="number" id="mediaEpisode" min="1" placeholder="1">
+                        </div>
+                        <!-- Campo específico para mangas/novelas -->
+                        <div class="form-group" id="chapterGroup" style="display: none;">
+                            <label for="mediaChapter">Capítulo actual</label>
+                            <input type="number" id="mediaChapter" min="1" placeholder="1">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="mediaComment">Comentario</label>
+                            <textarea id="mediaComment" rows="3" placeholder="Tus impresiones, notas..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeMediaModal()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <span id="mediaSubmitBtnText">Añadir elemento</span>
                         </button>
                     </div>
                 </form>
