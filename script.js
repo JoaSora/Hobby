@@ -279,15 +279,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function procesarFormulario(tipo, item) {
     if (tipo === 'lectura') {
-    item.fechaTerminacion = document.getElementById('fecha-terminacion-lectura').value;
-    item.horasLeidas = parseInt(document.getElementById('horas-leidas').value) || 0;
-    } else if (tipo === 'visualizacion') {
-    item.fechaTerminacion = document.getElementById('fecha-terminacion-visualizacion').value;
-    item.horasVistas = parseInt(document.getElementById('horas-vistas').value) || 0;
-    } else if (tipo === 'juegos') {
-    item.fechaTerminacion = document.getElementById('fecha-terminacion-juego').value;
-    item.horasJugadas = parseInt(document.getElementById('horas-jugadas').value) || 0;
-    }
+  item.fechaTerminacion = document.getElementById('fecha-terminacion-lectura').value;
+  const hl = document.getElementById('horas-leidas').value.trim();
+  item.horasLeidas = hl === '' ? 0 : parseInt(hl);
+  } else if (tipo === 'visualizacion') {
+  item.fechaTerminacion = document.getElementById('fecha-terminacion-visualizacion').value;
+  const hv = document.getElementById('horas-vistas').value.trim();
+  item.horasVistas = hv === '' ? 0 : parseInt(hv);
+  } else if (tipo === 'juegos') {
+  item.fechaTerminacion = document.getElementById('fecha-terminacion-juego').value;
+  const hj = document.getElementById('horas-jugadas').value.trim();
+  item.horasJugadas = hj === '' ? 0 : parseInt(hj);
+  }
     let items = JSON.parse(localStorage.getItem(tipo)) || [];
     if (editando.tipo === tipo && editando.index !== null) {
       items[editando.index] = item;
