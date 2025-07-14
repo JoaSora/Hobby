@@ -3,302 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Biblioteca Personal</title>
+    <title>Hobby Tracker</title>
     <link href="icon.png" rel="icon" type="image/png">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="app">
-        <!-- Overlay para móvil -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-        
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h1 class="logo">
-                    <span class="logo-icon">🎯</span>
-                    HobbyTracker
-                </h1>
-            </div>
+    <header>
+        <h1>Hobby Tracker</h1>
+    </header>
+    <main>
+        <!-- Sección de Lectura -->
+        <section id="lectura">
+            <h2>Lectura</h2>
+            <form id="form-lectura">
+                <input type="text" id="nombre-lectura" placeholder="Nombre" required>
+                <input type="text" id="autor" placeholder="Autor" required>
+                <select id="tipo-lectura">
+                    <option value="libro">Libro</option>
+                    <option value="manga">Manga</option>
+                    <option value="manhwa">Manhwa</option>
+                    <option value="novela">Novela</option>
+                </select>
+                <select id="estado-lectura">
+                    <option value="leyendo">Leyendo</option>
+                    <option value="terminado">Terminado</option>
+                    <option value="abandonado">Abandonado</option>
+                    <option value="pendiente">Pendiente</option>
+                </select>
+                <input type="text" id="genero-lectura" placeholder="Género" required>
+                <input type="number" id="calificacion-lectura" placeholder="Calificación (1-10)" min="1" max="10" required>
+                <input type="number" id="capitulo-actual" placeholder="Capítulo Actual">
+                <input type="number" id="capitulos-totales" placeholder="Capítulos Totales">
+                <input type="number" id="anio-lectura" placeholder="Año" required>
+                <label for="fecha-terminacion-lectura" style="display:none;">Fecha Terminación</label>
+                <input type="month" id="fecha-terminacion-lectura" placeholder="Mes/Año Terminación">
+                <button type="submit">Agregar Lectura</button>
+            </form>
+            <div id="lista-lectura"></div>
+            <button id="ver-mas-lectura" class="ver-mas">Ver más</button>
+        </section>
 
-            <nav class="sidebar-nav" id="sidebarNav">
-                <!-- Las secciones se generarán dinámicamente aquí -->
-            </nav>
+        <!-- Sección de Visualización -->
+        <section id="visualizacion">
+            <h2>Visualización</h2>
+            <form id="form-visualizacion">
+                <input type="text" id="nombre-visualizacion" placeholder="Nombre" required>
+                <select id="tipo-visualizacion">
+                    <option value="pelicula">Película</option>
+                    <option value="serie">Serie</option>
+                    <option value="anime">Anime</option>
+                </select>
+                <select id="estado-visualizacion">
+                    <option value="viendo">Viendo</option>
+                    <option value="terminado">Terminado</option>
+                    <option value="en espera">En Espera</option>
+                    <option value="dropeado">Dropeado</option>
+                </select>
+                <input type="text" id="genero-visualizacion" placeholder="Género" required>
+                <input type="number" id="calificacion-visualizacion" placeholder="Calificación (1-10)" min="1" max="10" required>
+                <input type="number" id="temporada-actual" placeholder="Temporada Actual">
+                <input type="number" id="episodio-actual" placeholder="Episodio Actual">
+                <input type="number" id="episodios-totales" placeholder="Episodios Totales">
+                <input type="number" id="horas-vistas" placeholder="Horas Vistas" required>
+                <input type="number" id="anio-visualizacion" placeholder="Año" required>
+                <label for="fecha-terminacion-visualizacion" style="display:none;">Fecha Terminación</label>
+                <input type="month" id="fecha-terminacion-visualizacion" placeholder="Mes/Año Terminación">
+                <button type="submit">Agregar Visualización</button>
+            </form>
+            <div id="lista-visualizacion"></div>
+            <button id="ver-mas-visualizacion" class="ver-mas">Ver más</button>
+        </section>
 
-            <div class="sidebar-footer">
-                <div class="nav-section">
-                    <h3 class="nav-title">Configuración</h3>
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <button class="nav-link config-btn" onclick="exportData()" title="Descargar backup de datos">
-                                <span class="nav-icon">📥</span>
-                                Exportar datos
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link config-btn" onclick="triggerImport()" title="Cargar backup de datos">
-                                <span class="nav-icon">📤</span>
-                                Importar datos
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
-            </div>
-        </aside>
+        <!-- Sección de Juegos -->
+        <section id="juegos">
+            <h2>Juegos</h2>
+            <form id="form-juegos">
+                <input type="text" id="nombre-juego" placeholder="Nombre" required>
+                <select id="estado-juego">
+                    <option value="jugando">Jugando</option>
+                    <option value="terminado">Terminado</option>
+                    <option value="en espera">En Espera</option>
+                    <option value="dropeado">Dropeado</option>
+                </select>
+                <input type="text" id="genero-juego" placeholder="Género" required>
+                <input type="number" id="calificacion-juego" placeholder="Calificación (1-10)" min="1" max="10" required>
+                <input type="number" id="horas-jugadas" placeholder="Horas Jugadas" required>
+                <input type="text" id="logros-obtenidos" placeholder="Logros Obtenidos" required>
+                <input type="number" id="logros-totales" placeholder="Logros Totales" required>
+                <select id="Platino">
+                    <option value="Si">Platino Completado</option>
+                    <option value="No">Platino Incompleto</option>
+                    <option value="Proceso">Platino En Proceso</option>
+                </select>
+                <input type="number" id="anio-juego" placeholder="Año" required>
+                <label for="fecha-terminacion-juego" style="display:none;">Fecha Terminación</label>
+                <input type="month" id="fecha-terminacion-juego" placeholder="Mes/Año Terminación">
+                <button type="submit">Agregar Juego</button>
+            </form>
+            <div id="lista-juegos"></div>
+            <button id="ver-mas-juegos" class="ver-mas">Ver más</button>
+        </section>
 
-        <!-- Sidebar Toggle Button -->
-        <button class="sidebar-toggle" id="sidebarToggle">
-            <span class="hamburger"></span>
-            <span class="hamburger"></span>
-            <span class="hamburger"></span>
-        </button>
-
-        <!-- Main Content -->
-        <main class="main-content" id="mainContent">
-            <header class="content-header">
-                <div class="header-left">
-                    <h2 class="page-title" id="pageTitle">Todos los juegos</h2>
-                    <p class="page-subtitle" id="pageSubtitle">Gestiona tu biblioteca personal</p>
-                </div>
-                <div class="header-actions">
-                    <div class="search-container">
-                        <input type="text" id="searchInput" placeholder="Buscar..." class="search-input">
-                        <span class="search-icon">🔍</span>
-                    </div>
-                    <select id="genreFilter" class="filter-select">
-                        <option value="all">Todos los géneros</option>
-                    </select>
-                    <select id="statusFilter" class="filter-select">
-                        <option value="all">Todos los estados</option>
-                    </select>
-                    
-                    <button class="btn btn-primary" id="addItemBtn" onclick="openAddModal()">
-                        <span class="btn-icon">+</span>
-                        <span class="btn-text">Añadir</span>
-                    </button>
-                </div>
-            </header>
-
-            <!-- Stats Cards - Solo para juegos -->
-            <div class="stats-container" id="statsContainer">
-                <div class="stat-card stat-warning">
-                    <div class="stat-icon">🏆</div>
-                    <div class="stat-content">
-                        <div class="stat-number" id="statsPlatinums">0</div>
-                        <div class="stat-label">Platinos</div>
-                    </div>
-                </div>
-                <div class="stat-card stat-info">
-                    <div class="stat-icon">⏱️</div>
-                    <div class="stat-content">
-                        <div class="stat-number" id="statsTotalHours">0</div>
-                        <div class="stat-label">Horas jugadas</div>
-                    </div>
-                </div>
-                <div class="stat-card stat-success">
-                    <div class="stat-icon">🎯</div>
-                    <div class="stat-content">
-                        <div class="stat-number" id="statsTotalAchievements">0</div>
-                        <div class="stat-label">Logros totales</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Content Grid -->
-            <div class="content-section">
-                <div class="content-grid" id="contentGrid">
-                    <!-- Los elementos se generarán aquí -->
-                </div>
-                <div class="empty-state" id="emptyState" style="display: none;">
-                    <div class="empty-icon">📚</div>
-                    <h3>No hay elementos aquí</h3>
-                    <p>Añade tu primer elemento para comenzar</p>
-                    <button class="btn btn-primary" onclick="openAddModal()">
-                        <span class="btn-icon">+</span>
-                        Añadir elemento
-                    </button>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- Modal para añadir/editar juego -->
-    <div class="modal-overlay" id="gameModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 id="gameModalTitle">Añadir nuevo juego</h2>
-                <button class="modal-close" onclick="closeGameModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <form id="gameForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="gameTitle">Título del juego *</label>
-                            <input type="text" id="gameTitle" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="gameSaga">Saga/Serie</label>
-                            <input type="text" id="gameSaga" placeholder="Ej: Resident Evil">
-                        </div>
-                        <div class="form-group">
-                            <label for="gameGenre">Género</label>
-                            <select id="gameGenre">
-                                <option value="">Selecciona un género</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="gamePlatform">Plataforma</label>
-                            <select id="gamePlatform">
-                                <option value="">Selecciona una plataforma</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="gameStatus">Estado</label>
-                            <select id="gameStatus">
-                                <option value="wishlist">Lista de deseos</option>
-                                <option value="playing">Jugando</option>
-                                <option value="completed">Completado</option>
-                                <option value="paused">Pausado</option>
-                                <option value="abandoned">Abandonado</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="gameHours">Horas jugadas</label>
-                            <input type="number" id="gameHours" min="0" step="0.1" placeholder="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="gameTotalAchievements">Total de logros</label>
-                            <input type="number" id="gameTotalAchievements" min="0" max="10000" placeholder="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="gameCompletedAchievements">Logros completados</label>
-                            <input type="number" id="gameCompletedAchievements" min="0" max="10000" placeholder="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="gameRating">Calificación (1.0-10.0)</label>
-                            <input type="number" id="gameRating" min="1" max="10" step="0.1" placeholder="0">
-                        </div>
-                        <div class="form-group checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="platinumObtained">
-                                <span class="checkmark"></span>
-                                Platino obtenido
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label for="gameList">Lista personalizada</label>
-                            <select id="gameList">
-                                <option value="">Sin lista</option>
-                            </select>
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="gameNotes">Notas</label>
-                            <textarea id="gameNotes" rows="3" placeholder="Comentarios, impresiones..."></textarea>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeGameModal()">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">
-                            <span id="gameSubmitBtnText">Añadir juego</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para añadir/editar contenido multimedia -->
-    <div class="modal-overlay" id="mediaModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 id="mediaModalTitle">Añadir elemento</h2>
-                <button class="modal-close" onclick="closeMediaModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <form id="mediaForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="mediaTitle">Título *</label>
-                            <input type="text" id="mediaTitle" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="mediaGenre">Género</label>
-                            <select id="mediaGenre">
-                                <option value="">Selecciona un género</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="mediaStatus">Estado</label>
-                            <select id="mediaStatus">
-                                <option value="pendiente">Pendiente</option>
-                                <option value="viendo">Viendo/Leyendo</option>
-                                <option value="terminado">Terminado</option>
-                                <option value="pausado">Pausado</option>
-                                <option value="abandonado">Abandonado</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="mediaRating">Calificación (1.0-10.0)</label>
-                            <input type="number" id="mediaRating" min="1" max="10" step="0.1" placeholder="0">
-                        </div>
-                        <!-- Campos específicos para series/animes -->
-                        <div class="form-group" id="seasonGroup" style="display: none;">
-                            <label for="mediaSeason">Temporada actual</label>
-                            <input type="number" id="mediaSeason" min="1" placeholder="1">
-                        </div>
-                        <div class="form-group" id="episodeGroup" style="display: none;">
-                            <label for="mediaEpisode">Capítulo/Episodio actual</label>
-                            <input type="number" id="mediaEpisode" min="1" placeholder="1">
-                        </div>
-                        <!-- Campo específico para mangas/novelas -->
-                        <div class="form-group" id="chapterGroup" style="display: none;">
-                            <label for="mediaChapter">Capítulo actual</label>
-                            <input type="number" id="mediaChapter" min="1" placeholder="1">
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="mediaComment">Comentario</label>
-                            <textarea id="mediaComment" rows="3" placeholder="Tus impresiones, notas..."></textarea>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeMediaModal()">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">
-                            <span id="mediaSubmitBtnText">Añadir elemento</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para crear lista -->
-    <div class="modal-overlay" id="listModal">
-        <div class="modal modal-small">
-            <div class="modal-header">
-                <h2>Crear nueva lista</h2>
-                <button class="modal-close" onclick="closeCreateListModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <form id="listForm">
-                    <div class="form-group">
-                        <label for="listName">Nombre de la lista</label>
-                        <input type="text" id="listName" placeholder="Ej: Resident Evil, Juegos de terror..." required>
-                    </div>
-                    <div class="form-group">
-                        <label for="listDescription">Descripción (opcional)</label>
-                        <textarea id="listDescription" rows="2" placeholder="Describe tu lista..."></textarea>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeCreateListModal()">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Crear lista</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
+        <!-- Sección de Estadísticas -->
+        <section id="estadisticas">
+            <h2>Estadísticas</h2>
+            <div id="resumen-estadisticas"></div>
+        </section>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>
