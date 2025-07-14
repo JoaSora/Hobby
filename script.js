@@ -350,11 +350,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function formatearDetalle(tipo, item) {
     if (tipo === 'lectura') {
-    return `Autor: ${item.autor} | Calificación: ${item.calificacion} | Horas leídas: ${item.horasLeidas || 0}`;
+    return `Autor: ${item.autor} | Horas leídas: ${item.horasLeidas || 0} | Calificación: ${item.calificacion} | C: ${item.capituloActual}/${item.capitulosTotales}`;
     } else if (tipo === 'visualizacion') {
-      return `Horas vistas: ${item.horasVistas} | Calificación: ${item.calificacion}`;
+      return `Horas vistas: ${item.horasVistas} | Calificación: ${item.calificacion} | T: ${item.temporadaActual} | C: ${item.episodioActual}/${item.episodiosTotales}`;
     } else if (tipo === 'juegos') {
-      return `Horas jugadas: ${item.horasJugadas} | Logros: ${item.logrosObtenidos}/${item.logrosTotales} | Platino: ${item.platino}`;
+      return `Horas jugadas: ${item.horasJugadas} | Calificación: ${item.calificacion} | Logros: ${item.logrosObtenidos}/${item.logrosTotales} | Platino: ${item.platino}`;
     }
     return '';
   }
