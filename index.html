@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hobby Tracker</title>
+    <link href="icon.png" rel="icon" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Hobby Tracker</h1>
+    </header>
+    <main>
+        <!-- Sección de Lectura -->
+        <section id="lectura">
+            <h2>Lectura</h2>
+            <form id="form-lectura">
+                <input type="text" id="nombre-lectura" placeholder="Nombre" required>
+                <input type="text" id="autor" placeholder="Autor" required>
+                <select id="tipo-lectura">
+                    <option value="libro">Libro</option>
+                    <option value="manga">Manga</option>
+                    <option value="manhwa">Manhwa</option>
+                    <option value="novela">Novela</option>
+                </select>
+                <select id="estado-lectura">
+                    <option value="leyendo">Leyendo</option>
+                    <option value="terminado">Terminado</option>
+                    <option value="abandonado">Abandonado</option>
+                    <option value="pendiente">Pendiente</option>
+                </select>
+                <input type="text" id="genero-lectura" placeholder="Género" required>
+                <input type="number" id="calificacion-lectura" placeholder="Calificación (1-10)" min="1" max="10" required>
+                <input type="number" id="horas-leidas" placeholder="Horas Leídas" required>
+                <input type="number" id="capitulo-actual" placeholder="Capítulo Actual">
+                <input type="number" id="capitulos-totales" placeholder="Capítulos Totales">
+                <input type="number" id="anio-lectura" placeholder="Año" required>
+                <label for="fecha-terminacion-lectura" style="display:none;">Fecha Terminación</label>
+                <input type="month" id="fecha-terminacion-lectura" placeholder="Mes/Año Terminación">
+                <button type="submit">Agregar Lectura</button>
+            </form>
+            <div id="lista-lectura"></div>
+            <button id="ver-mas-lectura" class="ver-mas">Ver más</button>
+        </section>
+
+        <!-- Sección de Visualización -->
+        <section id="visualizacion">
+            <h2>Visualización</h2>
+            <form id="form-visualizacion">
+                <input type="text" id="nombre-visualizacion" placeholder="Nombre" required>
+                <select id="tipo-visualizacion">
+                    <option value="pelicula">Película</option>
+                    <option value="serie">Serie</option>
+                    <option value="anime">Anime</option>
+                </select>
+                <select id="estado-visualizacion">
+                    <option value="viendo">Viendo</option>
+                    <option value="terminado">Terminado</option>
+                    <option value="en espera">En Espera</option>
+                    <option value="dropeado">Dropeado</option>
+                </select>
+                <input type="text" id="genero-visualizacion" placeholder="Género" required>
+                <input type="number" id="calificacion-visualizacion" placeholder="Calificación (1-10)" min="1" max="10" required>
+                <input type="number" id="horas-vistas" placeholder="Horas Vistas" required>
+                <input type="number" id="temporada-actual" placeholder="Temporada Actual">
+                <input type="number" id="episodio-actual" placeholder="Episodio Actual">
+                <input type="number" id="episodios-totales" placeholder="Episodios Totales">
+                <input type="number" id="anio-visualizacion" placeholder="Año" required>
+                <label for="fecha-terminacion-visualizacion" style="display:none;">Fecha Terminación</label>
+                <input type="month" id="fecha-terminacion-visualizacion" placeholder="Mes/Año Terminación">
+                <button type="submit">Agregar Visualización</button>
+            </form>
+            <div id="lista-visualizacion"></div>
+            <button id="ver-mas-visualizacion" class="ver-mas">Ver más</button>
+        </section>
+
+        <!-- Sección de Juegos -->
+        <section id="juegos">
+            <h2>Juegos</h2>
+            <form id="form-juegos">
+                <input type="text" id="nombre-juego" placeholder="Nombre" required>
+                <select id="estado-juego">
+                    <option value="jugando">Jugando</option>
+                    <option value="terminado">Terminado</option>
+                    <option value="en espera">En Espera</option>
+                    <option value="dropeado">Dropeado</option>
+                </select>
+                <input type="text" id="genero-juego" placeholder="Género" required>
+                <input type="number" id="calificacion-juego" placeholder="Calificación (1-10)" min="1" max="10" required>
+                <input type="number" id="horas-jugadas" placeholder="Horas Jugadas" required>
+                <input type="text" id="logros-obtenidos" placeholder="Logros Obtenidos" required>
+                <input type="number" id="logros-totales" placeholder="Logros Totales" required>
+                <select id="Platino">
+                    <option value="Si">Platino Completado</option>
+                    <option value="No">Platino Incompleto</option>
+                    <option value="Proceso">Platino En Proceso</option>
+                </select>
+                <input type="number" id="anio-juego" placeholder="Año" required>
+                <label for="fecha-terminacion-juego" style="display:none;">Fecha Terminación</label>
+                <input type="month" id="fecha-terminacion-juego" placeholder="Mes/Año Terminación">
+                <button type="submit">Agregar Juego</button>
+            </form>
+            <div id="lista-juegos"></div>
+            <button id="ver-mas-juegos" class="ver-mas">Ver más</button>
+        </section>
+
+        <!-- Sección de Estadísticas -->
+        <section id="estadisticas">
+            <h2>Estadísticas</h2>
+            <div id="resumen-estadisticas"></div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
