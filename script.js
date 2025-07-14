@@ -283,10 +283,10 @@ window.addEventListener('DOMContentLoaded', () => {
     item.horasLeidas = parseInt(document.getElementById('horas-leidas').value) || 0;
     } else if (tipo === 'visualizacion') {
     item.fechaTerminacion = document.getElementById('fecha-terminacion-visualizacion').value;
-    item.horasVistas = parseInt(document.getElementById('horas-leidas').value) || 0;
+    item.horasVistas = parseInt(document.getElementById('horas-vistas').value) || 0;
     } else if (tipo === 'juegos') {
     item.fechaTerminacion = document.getElementById('fecha-terminacion-juego').value;
-    item.horasJugadas = parseInt(document.getElementById('horas-leidas').value) || 0;
+    item.horasJugadas = parseInt(document.getElementById('horas-jugadas').value) || 0;
     }
     let items = JSON.parse(localStorage.getItem(tipo)) || [];
     if (editando.tipo === tipo && editando.index !== null) {
