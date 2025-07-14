@@ -280,10 +280,13 @@ window.addEventListener('DOMContentLoaded', () => {
   function procesarFormulario(tipo, item) {
     if (tipo === 'lectura') {
     item.fechaTerminacion = document.getElementById('fecha-terminacion-lectura').value;
+    item.horasLeidas = parseInt(document.getElementById('horas-leidas').value) || 0;
     } else if (tipo === 'visualizacion') {
     item.fechaTerminacion = document.getElementById('fecha-terminacion-visualizacion').value;
+    item.horasVistas = parseInt(document.getElementById('horas-leidas').value) || 0;
     } else if (tipo === 'juegos') {
     item.fechaTerminacion = document.getElementById('fecha-terminacion-juego').value;
+    item.horasJugadas = parseInt(document.getElementById('horas-leidas').value) || 0;
     }
     let items = JSON.parse(localStorage.getItem(tipo)) || [];
     if (editando.tipo === tipo && editando.index !== null) {
@@ -344,7 +347,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function formatearDetalle(tipo, item) {
     if (tipo === 'lectura') {
-      return `Autor: ${item.autor} | Calificación: ${item.calificacion}`;
+    return `Autor: ${item.autor} | Calificación: ${item.calificacion} | Horas leídas: ${item.horasLeidas || 0}`;
     } else if (tipo === 'visualizacion') {
       return `Horas vistas: ${item.horasVistas} | Calificación: ${item.calificacion}`;
     } else if (tipo === 'juegos') {
@@ -374,6 +377,7 @@ window.addEventListener('DOMContentLoaded', () => {
       setValue('estado-lectura', item.estado);
       setValue('genero-lectura', item.genero);
       setValue('calificacion-lectura', item.calificacion);
+      setValue('horas-leidas', item.horasLeidas || 0);
       setValue('capitulo-actual', item.capituloActual);
       setValue('capitulos-totales', item.capitulosTotales);
       setValue('anio-lectura', item.anio);
@@ -384,10 +388,10 @@ window.addEventListener('DOMContentLoaded', () => {
       setValue('estado-visualizacion', item.estado);
       setValue('genero-visualizacion', item.genero);
       setValue('calificacion-visualizacion', item.calificacion);
+      setValue('horas-vistas', item.horasVistas || 0);
       setValue('temporada-actual', item.temporadaActual);
       setValue('episodio-actual', item.episodioActual);
       setValue('episodios-totales', item.episodiosTotales);
-      setValue('horas-vistas', item.horasVistas);
       setValue('anio-visualizacion', item.anio);
       setValue('fecha-terminacion-visualizacion', item.fechaTerminacion || '');
     } else if (tipo === 'juegos') {
@@ -395,7 +399,7 @@ window.addEventListener('DOMContentLoaded', () => {
       setValue('estado-juego', item.estado);
       setValue('genero-juego', item.genero);
       setValue('calificacion-juego', item.calificacion);
-      setValue('horas-jugadas', item.horasJugadas);
+      setValue('horas-jugadas', item.horasJugadas || 0);
       setValue('logros-obtenidos', item.logrosObtenidos);
       setValue('logros-totales', item.logrosTotales);
       setValue('Platino', item.platino);
@@ -423,21 +427,24 @@ window.addEventListener('DOMContentLoaded', () => {
     const novelas = lecturas.filter(i => i.tipo === 'novela').length;
     const mangas = lecturas.filter(i => i.tipo === 'manga').length;
     const manwhas = lecturas.filter(i => i.tipo === 'manhwa').length;
+    const horasLectura = lecturas.reduce((acc, i) => acc + parseInt(i.horasLeidas || 0), 0);
 
     const totalVisualizaciones = visualizaciones.length;
     const completasVisual = visualizaciones.filter(i => i.estado === 'terminado').length;
     const pelis = visualizaciones.filter(i => i.tipo === 'pelicula').length;
     const series = visualizaciones.filter(i => i.tipo === 'serie').length;
     const animes = visualizaciones.filter(i => i.tipo === 'anime').length;
+    const horasVistas = visualizaciones.reduce((acc, i) => acc + parseInt(i.horasVistas || 0), 0);
 
     const totalJuegos = juegos.length;
     const logrosTotales = juegos.reduce((acc, i) => acc + parseInt(i.logrosTotales || 0), 0);
     const platinos = juegos.filter(j => j.platino === 'Si').length;
+    const horasJugadas = juegos.reduce((acc, i) => acc + parseInt(i.horasJugadas || 0), 0);
 
     resumenEstadisticas.innerHTML = `
-      <p><strong>Total Lecturas:</strong> ${totalLecturas} | Completadas: ${completasLectura} | Libros: ${libros} | Novelas: ${novelas} | Mangas: ${mangas} | Manwhas: ${manwhas}</p>
-      <p><strong>Total Visualizaciones:</strong> ${totalVisualizaciones} | Completadas: ${completasVisual} | Películas: ${pelis} | Series: ${series} | Animes: ${animes}</p>
-      <p><strong>Total Juegos:</strong> ${totalJuegos} | Logros Totales: ${logrosTotales} | Platinados: ${platinos}</p>
+      <p><strong>Total Lecturas:</strong> ${totalLecturas} | Completadas: ${completasLectura} | Libros: ${libros} | Novelas: ${novelas} | Mangas: ${mangas} | Manwhas: ${manwhas} | Horas leídas: ${horasLectura}</p>
+      <p><strong>Total Visualizaciones:</strong> ${totalVisualizaciones} | Completadas: ${completasVisual} | Películas: ${pelis} | Series: ${series} | Animes: ${animes} | Horas vistas: ${horasVistas}</p>
+      <p><strong>Total Juegos:</strong> ${totalJuegos} | Logros Totales: ${logrosTotales} | Platinados: ${platinos} | Horas jugadas: ${horasJugadas}</p>
     `;
   }
 
