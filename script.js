@@ -281,15 +281,15 @@ window.addEventListener('DOMContentLoaded', () => {
     if (tipo === 'lectura') {
   item.fechaTerminacion = document.getElementById('fecha-terminacion-lectura').value;
   const hl = document.getElementById('horas-leidas').value.trim();
-  item.horasLeidas = hl === '' ? 0 : parseInt(hl);
+  item.horasLeidas = hl === '' ? 0 : parseFloat(hl);
   } else if (tipo === 'visualizacion') {
   item.fechaTerminacion = document.getElementById('fecha-terminacion-visualizacion').value;
   const hv = document.getElementById('horas-vistas').value.trim();
-  item.horasVistas = hv === '' ? 0 : parseInt(hv);
+  item.horasVistas = hv === '' ? 0 : parseFloat(hv);
   } else if (tipo === 'juegos') {
   item.fechaTerminacion = document.getElementById('fecha-terminacion-juego').value;
   const hj = document.getElementById('horas-jugadas').value.trim();
-  item.horasJugadas = hj === '' ? 0 : parseInt(hj);
+  item.horasJugadas = hj === '' ? 0 : parseFloat(hj);
   }
     let items = JSON.parse(localStorage.getItem(tipo)) || [];
     if (editando.tipo === tipo && editando.index !== null) {
@@ -441,19 +441,19 @@ window.addEventListener('DOMContentLoaded', () => {
     const novelas = lecturas.filter(i => i.tipo === 'novela').length;
     const mangas = lecturas.filter(i => i.tipo === 'manga').length;
     const manwhas = lecturas.filter(i => i.tipo === 'manhwa').length;
-    const horasLectura = lecturas.reduce((acc, i) => acc + parseInt(i.horasLeidas || 0), 0);
+    const horasLectura = lecturas.reduce((acc, i) => acc + parseFloat(i.horasLeidas || 0), 0);
 
     const totalVisualizaciones = visualizaciones.length;
     const completasVisual = visualizaciones.filter(i => i.estado === 'terminado').length;
     const pelis = visualizaciones.filter(i => i.tipo === 'pelicula').length;
     const series = visualizaciones.filter(i => i.tipo === 'serie').length;
     const animes = visualizaciones.filter(i => i.tipo === 'anime').length;
-    const horasVistas = visualizaciones.reduce((acc, i) => acc + parseInt(i.horasVistas || 0), 0);
+    const horasVistas = visualizaciones.reduce((acc, i) => acc + parseFloat(i.horasVistas || 0), 0);
 
     const totalJuegos = juegos.length;
     const logrosTotales = juegos.reduce((acc, i) => acc + parseInt(i.logrosTotales || 0), 0);
     const platinos = juegos.filter(j => j.platino === 'Si').length;
-    const horasJugadas = juegos.reduce((acc, i) => acc + parseInt(i.horasJugadas || 0), 0);
+    const horasJugadas = juegos.reduce((acc, i) => acc + parseFloat(i.horasJugadas || 0), 0);
 
     resumenEstadisticas.innerHTML = `
       <p><strong>Total Lecturas:</strong> ${totalLecturas} | Completadas: ${completasLectura} | Libros: ${libros} | Novelas: ${novelas} | Mangas: ${mangas} | Manwhas: ${manwhas} | Horas leídas: ${horasLectura}</p>
