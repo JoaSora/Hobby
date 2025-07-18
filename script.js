@@ -254,12 +254,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Funcionalidad principal luego de botones adicionales
 
-  document.querySelectorAll('input[type="text"]').forEach(input => {
-    input.addEventListener('input', () => {
-      input.value = input.value.charAt(0).toUpperCase() + input.value.slice(1);
-    });
-  });
-
   cargarDatos();
 
   Object.keys(botonesVerMas).forEach(tipo => {
@@ -270,12 +264,34 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   function value(id) {
-    return document.getElementById(id).value.trim();
+  const texto = document.getElementById(id).value.trim();
+
+  // Solo capitalizar ciertos campos:
+  const camposConCapitalizacion = [
+    'nombre-lectura',
+    'autor',
+    'genero-lectura',
+    'nombre-visualizacion',
+    'genero-visualizacion',
+    'nombre-juego',
+    'genero-juego'
+  ];
+
+  if (camposConCapitalizacion.includes(id)) {
+    return capitalizeWords(texto);
+  }
+
+  return texto;
   }
 
   function setValue(id, valor) {
     document.getElementById(id).value = valor;
   }
+
+  function capitalizeWords(text) {
+  return text.replace(/\b\w/g, c => c.toUpperCase());
+  }
+
 
   function procesarFormulario(tipo, item) {
     if (tipo === 'lectura') {
