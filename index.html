@@ -40,6 +40,20 @@
                 <input type="month" id="fecha-terminacion-lectura" placeholder="Mes/Año Terminación">
                 <button type="submit">Agregar Lectura</button>
             </form>
+            <div class="filtros" id="filtros-lectura">
+                <input type="text" id="busqueda-lectura" placeholder="Buscar por nombre...">
+                <select id="filtro-tipo-lectura">                    <option value="">Todos los tipos</option>
+                    <option value="libro">Libro</option>
+                    <option value="manga">Manga</option>
+                    <option value="manhwa">Manhwa</option>
+                    <option value="novela">Novela</option>
+                </select>
+                <select id="orden-calificacion-lectura">
+                    <option value="">Ordenar por</option>
+                    <option value="mayor">Mayor calificación</option>
+                </select>
+                <input type="text" id="filtro-genero-lectura" placeholder="Filtrar por género...">
+            </div>
             <div id="lista-lectura"></div>
             <button id="ver-mas-lectura" class="ver-mas">Ver más</button>
         </section>
@@ -71,8 +85,22 @@
                 <input type="month" id="fecha-terminacion-visualizacion" placeholder="Mes/Año Terminación">
                 <button type="submit">Agregar Visualización</button>
             </form>
-            <div id="lista-visualizacion"></div>
-            <button id="ver-mas-visualizacion" class="ver-mas">Ver más</button>
+            <div class="filtros" id="filtros-visualizacion">
+                <input type="text" id="busqueda-visualizacion" placeholder="Buscar por nombre...">
+                <select id="filtro-tipo-visualizacion">
+                    <option value="">Todos los tipos</option>
+                    <option value="pelicula">Películas</option>
+                    <option value="serie">Series</option>
+                    <option value="anime">Anime</option>
+                </select>
+                <select id="orden-calificacion-visualizacion">
+                    <option value="">Ordenar por</option>
+                    <option value="mayor">Mayor calificación</option>
+                </select>
+                <input type="text" id="filtro-genero-visualizacion" placeholder="Filtrar por género...">
+            </div>
+                <div id="lista-visualizacion"></div>
+                <button id="ver-mas-visualizacion" class="ver-mas">Ver más</button>
         </section>
 
         <!-- Sección de Juegos -->
@@ -101,6 +129,14 @@
                 <input type="month" id="fecha-terminacion-juego" placeholder="Mes/Año Terminación">
                 <button type="submit">Agregar Juego</button>
             </form>
+            <div class="filtros" id="filtros-juegos">
+                <input type="text" id="busqueda-juegos" placeholder="Buscar por nombre...">
+                <input type="text" id="filtro-genero-juegos" placeholder="Filtrar por género...">
+                <select id="orden-calificacion-juegos">
+                    <option value="">Ordenar por</option>
+                    <option value="mayor">Mayor calificación</option>
+                </select>
+            </div>
             <div id="lista-juegos"></div>
             <button id="ver-mas-juegos" class="ver-mas">Ver más</button>
         </section>
