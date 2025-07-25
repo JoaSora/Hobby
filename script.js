@@ -3,6 +3,67 @@
 // ===============================
 
 window.addEventListener('DOMContentLoaded', () => {
+
+// Filtros Lectura
+document.getElementById('busqueda-lectura').addEventListener('input', e => {
+  filtros.lectura.busqueda = e.target.value.toLowerCase();
+  mostrarItems('lectura');
+});
+
+document.getElementById('filtro-tipo-lectura').addEventListener('change', e => {
+  filtros.lectura.tipo = e.target.value.toLowerCase();
+  mostrarItems('lectura');
+});
+
+document.getElementById('filtro-genero-lectura').addEventListener('input', e => {
+  filtros.lectura.genero = e.target.value.toLowerCase();
+  mostrarItems('lectura');
+});
+
+document.getElementById('orden-calificacion-lectura').addEventListener('change', e => {
+  filtros.lectura.orden = e.target.value;
+  mostrarItems('lectura');
+});
+
+
+// Filtros Visualización
+document.getElementById('busqueda-visualizacion').addEventListener('input', e => {
+  filtros.visualizacion.busqueda = e.target.value.toLowerCase();
+  mostrarItems('visualizacion');
+});
+
+document.getElementById('filtro-tipo-visualizacion').addEventListener('change', e => {
+  filtros.visualizacion.tipo = e.target.value.toLowerCase();
+  mostrarItems('visualizacion');
+});
+
+document.getElementById('filtro-genero-visualizacion').addEventListener('input', e => {
+  filtros.visualizacion.genero = e.target.value.toLowerCase();
+  mostrarItems('visualizacion');
+});
+
+document.getElementById('orden-calificacion-visualizacion').addEventListener('change', e => {
+  filtros.visualizacion.orden = e.target.value;
+  mostrarItems('visualizacion');
+});
+
+// Filtros Juegos
+document.getElementById('busqueda-juegos').addEventListener('input', e => {
+  filtros.juegos.busqueda = e.target.value.toLowerCase();
+  mostrarItems('juegos');
+});
+
+document.getElementById('filtro-genero-juegos').addEventListener('input', e => {
+  filtros.juegos.genero = e.target.value.toLowerCase();
+  mostrarItems('juegos');
+});
+
+document.getElementById('orden-calificacion-juegos').addEventListener('change', e => {
+  filtros.juegos.orden = e.target.value;
+  mostrarItems('juegos');
+});
+
+
   const MAX_ITEMS = 5;
 
   const forms = {
@@ -80,6 +141,12 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   const mostrarCompleto = { lectura: false, visualizacion: false, juegos: false };
+
+  const filtros = {
+  lectura: { busqueda: '', tipo: '', genero: '', orden: '' },
+  visualizacion: { busqueda: '', tipo: '', genero: '', orden: '' },
+  juegos: { busqueda: '', genero: '', orden: '' }
+  };
 
   let editando = { tipo: null, index: null };
 
@@ -324,8 +391,45 @@ window.addEventListener('DOMContentLoaded', () => {
     const lista = listas[tipo];
     lista.innerHTML = '';
 
-    const ordenados = [...items].sort((a, b) => a.nombre.localeCompare(b.nombre));
-    const visibles = mostrarCompleto[tipo] ? ordenados : ordenados.slice(0, MAX_ITEMS);
+    let ordenados = [...items];
+
+    if (filtros[tipo].orden === 'mayor') {
+    ordenados.sort((a, b) => (b.calificacion || 0) - (a.calificacion || 0));
+    } else {
+    ordenados.sort((a, b) => {
+      const nombreA = a.nombre.toLowerCase();
+      const nombreB = b.nombre.toLowerCase();
+      return nombreA.localeCompare(nombreB);
+    });
+    }
+    
+  let filtrados = ordenados;
+
+  if (tipo === 'visualizacion') {
+  filtrados = filtrados.filter(item => {
+    const coincideNombre = item.nombre.toLowerCase().includes(filtros.visualizacion.busqueda);
+    const coincideTipo = !filtros.visualizacion.tipo || item.tipo === filtros.visualizacion.tipo;
+    const coincideGenero = !filtros.visualizacion.genero || item.genero.toLowerCase().includes(filtros.visualizacion.genero);
+    return coincideNombre && coincideTipo && coincideGenero;
+    });
+  } 
+  else if (tipo === 'lectura') {
+  filtrados = filtrados.filter(item => {
+    const coincideNombre = item.nombre.toLowerCase().includes(filtros.lectura.busqueda);
+    const coincideTipo = !filtros.lectura.tipo || item.tipo === filtros.lectura.tipo;
+    const coincideGenero = !filtros.lectura.genero || item.genero.toLowerCase().includes(filtros.lectura.genero);
+    return coincideNombre && coincideTipo && coincideGenero;
+    });
+  }
+  else if (tipo === 'juegos') {
+  filtrados = filtrados.filter(item => {
+    const coincideNombre = item.nombre.toLowerCase().includes(filtros.juegos.busqueda);
+    const coincideGenero = !filtros.juegos.genero || item.genero.toLowerCase().includes(filtros.juegos.genero);
+    return coincideNombre && coincideGenero;
+    });
+  }
+
+    const visibles = mostrarCompleto[tipo] ? filtrados : filtrados.slice(0, MAX_ITEMS);
 
     visibles.forEach((item, realIndex) => {
       const index = items.findIndex(x => x.nombre === item.nombre && x.anio === item.anio);
@@ -373,6 +477,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     botonesVerMas[tipo].style.display = items.length > MAX_ITEMS ? 'block' : 'none';
     botonesVerMas[tipo].textContent = mostrarCompleto[tipo] ? 'Ver menos' : 'Ver más';
+    const contenedorFiltros = document.getElementById(`filtros-${tipo}`);
+    if (contenedorFiltros) {
+      contenedorFiltros.style.display = mostrarCompleto[tipo] ? 'flex' : 'none';
+    }
   }
 
   function formatearDetalle(tipo, item) {
